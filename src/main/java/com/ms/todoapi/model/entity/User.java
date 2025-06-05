@@ -1,4 +1,4 @@
-package com.ms.todoapi.entity;
+package com.ms.todoapi.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
