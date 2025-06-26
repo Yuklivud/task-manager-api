@@ -27,4 +27,11 @@ public class UserController {
         UserDto dto = userService.mapToDto(user);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/me")
+    @Operation(summary = "Get current user info")
+    public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal User user) {
+        UserDto dto = userService.mapToDto(user);
+        return ResponseEntity.ok(dto);
+    }
 }
