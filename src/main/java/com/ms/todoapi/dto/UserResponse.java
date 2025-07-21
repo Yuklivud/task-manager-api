@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Schema(description = "User")
+@Schema(description = "DTO for response")
 public record UserResponse(
         Long id,
         String email,
