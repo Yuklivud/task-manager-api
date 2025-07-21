@@ -1,6 +1,7 @@
 package com.ms.todoapi.controller;
 
-import com.ms.todoapi.dto.UserDto;
+import com.ms.todoapi.dto.UserResponse;
+import com.ms.todoapi.mapper.UserMapper;
 import com.ms.todoapi.model.entity.User;
 import com.ms.todoapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,19 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User Controller", description = "User-related operation")
 public class UserController {
 
-    public final UserService userService;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> findByID(@PathVariable Long id) {
         User user = userService.findById(id);
-        UserDto dto = userService.mapToDto(user);
+        UserResponse dto = userMapper.userToUserResponse(user);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/me")
     @Operation(summary = "Get current user info")
-    public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal User user) {
-        UserDto dto = userService.mapToDto(user);
+    public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal User user) {
+        UserResponse dto = userMapper.userToUserResponse(user);
         return ResponseEntity.ok(dto);
     }
 }
