@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Schema(description = "User")
-public record UserDto(
+public record UserResponse(
         Long id,
         String email,
         Boolean isActive,
