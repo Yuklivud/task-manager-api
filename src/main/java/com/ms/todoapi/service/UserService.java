@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Service
 public class UserService {
@@ -19,5 +20,9 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found"));
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }
