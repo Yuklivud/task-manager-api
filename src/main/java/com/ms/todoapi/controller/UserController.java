@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/users")
 @Tag(name = "User Controller", description = "User-related operation")
@@ -37,6 +39,12 @@ public class UserController {
     @Operation(summary = "Get current user info")
     public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal User user) {
         UserResponse dto = userMapper.userToUserResponse(user);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserResponse>> findAll() {
+        List<UserResponse> dto = userMapper.usersToUserResponses(userService.findAll());
         return ResponseEntity.ok(dto);
     }
 }
