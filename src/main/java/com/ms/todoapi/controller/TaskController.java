@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/tasks")
 public class TaskController {
@@ -29,4 +31,9 @@ public class TaskController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping()
+    public ResponseEntity<List<TaskResponse>> findAll() {
+        List<TaskResponse> dto = taskMapper.tasksToTaskResponses(taskService.findAll());
+        return ResponseEntity.ok(dto);
+    }
 }
