@@ -1,6 +1,8 @@
 package com.ms.todoapi.service;
 
+import com.ms.todoapi.model.entity.Task;
 import com.ms.todoapi.repository.TaskRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
+    public Task findById(Long id) {
+        return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task with id: " + id + " not found"));
+    }
 }
