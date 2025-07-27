@@ -34,4 +34,8 @@ public class TaskService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id: " + id + " not found"));
         taskRepository.delete(task);
     }
+
+    public Task create(Task task) {
+        return taskRepository.save(task);
+    }
 }
