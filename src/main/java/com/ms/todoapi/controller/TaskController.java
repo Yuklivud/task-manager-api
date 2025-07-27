@@ -1,10 +1,13 @@
 package com.ms.todoapi.controller;
 
+import com.ms.todoapi.dto.TaskRequest;
 import com.ms.todoapi.dto.TaskResponse;
 import com.ms.todoapi.mapper.TaskMapper;
 import com.ms.todoapi.model.entity.Task;
 import com.ms.todoapi.model.entity.User;
 import com.ms.todoapi.service.TaskService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +44,13 @@ public class TaskController {
                                                    @AuthenticationPrincipal User user) {
         taskService.deleteByIdAndUser(id, user);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping()
+    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest taskRequest,
+                                                   @AuthenticationPrincipal User user) {
+        Task task = taskMapper.toEntity(taskRequest, user);
+        taskService.create(task);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
