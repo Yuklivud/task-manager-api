@@ -34,8 +34,8 @@ public class AuthenticationService {
         Role userRole = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"));
 
         User user = new User();
-        user.setEmail(authRequest.email());
-        user.setPassword(passwordEncoder.encode(authRequest.password()));
+        user.setEmail(authRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(authRequest.getPassword()));
         user.setRoles(Set.of(userRole));
 
         userService.save(user);
@@ -45,8 +45,8 @@ public class AuthenticationService {
     }
 
     public AuthResponse signin(AuthRequest authRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.email(), authRequest.password()));
-        User user = userService.getByEmail(authRequest.email());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+        User user = userService.getByEmail(authRequest.getEmail());
         String jwt = jwtService.generateToken(user);
         return new AuthResponse(jwt);
     }
