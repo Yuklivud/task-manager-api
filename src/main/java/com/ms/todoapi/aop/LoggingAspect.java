@@ -50,7 +50,7 @@ public class LoggingAspect {
             logger.info("HTTP {} {} - Exiting: {} with result: {}, duration: {} ms", httpMethod, requestURI, methodName, summarizeResult(result), endTime);
             return result;
         } catch (Throwable ex) {
-            logger.error("HTTP {} {} - Exception in {}: {}", httpMethod, requestURI, methodName, ex.getMessage(), ex);
+            logger.error("HTTP {} {} - Exception in {}: {}", httpMethod, requestURI, methodName, ex.getMessage());
             throw ex;
         }
     }
