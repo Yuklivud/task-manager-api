@@ -6,6 +6,9 @@ import com.ms.todoapi.mapper.TaskMapper;
 import com.ms.todoapi.model.entity.Task;
 import com.ms.todoapi.model.entity.User;
 import com.ms.todoapi.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("api/tasks")
+@Tag(name = "Task Controller", description = "Task management operations")
 public class TaskController {
 
     private final TaskService taskService;
@@ -26,6 +29,8 @@ public class TaskController {
         this.taskMapper = taskMapper;
     }
 
+    @Operation(summary = "Get task by ID")
+    @ApiResponse(responseCode = "200", description = "Task found")
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> findById(@PathVariable Long id) {
         Task task = taskService.findById(id);
@@ -33,12 +38,16 @@ public class TaskController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "Get all tasks")
+    @ApiResponse(responseCode = "200", description = "List of all tasks")
     @GetMapping()
     public ResponseEntity<List<TaskResponse>> findAll() {
         List<TaskResponse> dto = taskMapper.tasksToTaskResponses(taskService.findAll());
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "Delete task by ID")
+    @ApiResponse(responseCode = "204", description = "Task deleted")
     @DeleteMapping("/{id}")
     public ResponseEntity<TaskResponse> deleteTask(@RequestParam Long id,
                                                    @AuthenticationPrincipal User user) {
@@ -46,6 +55,8 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Create a new task")
+    @ApiResponse(responseCode = "201", description = "Task created")
     @PostMapping()
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest taskRequest,
                                                    @AuthenticationPrincipal User user) {
@@ -54,3 +65,4 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
+
