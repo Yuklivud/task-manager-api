@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 
 public class AuthRequest {
 
+    @Email
     @NotBlank
     private String email;
 
     @NotBlank
-    @Email
     private String password;
 
     public AuthRequest(String email, String password) {
