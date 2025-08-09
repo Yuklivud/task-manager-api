@@ -11,3 +11,6 @@ spring:
     show-sql: true
 server:
   port: 8085
+token:
+  signing:
+    key: H8suM7pH+vTcYdcS3bf3Z6XZ2PO5w/9Pz0U4RgLvEKc=

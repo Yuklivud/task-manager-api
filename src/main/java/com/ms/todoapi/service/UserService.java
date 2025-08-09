@@ -1,39 +1,45 @@
 package com.ms.todoapi.service;
 
-import com.ms.todoapi.dto.UserDto;
-import com.ms.todoapi.model.entity.Role;
 import com.ms.todoapi.model.entity.User;
 import com.ms.todoapi.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public UserDto mapToDto(User user) {
-        return new UserDto(
-                user.getId(),
-                user.getEmail(),
-                user.getIsActive(),
-                user.getCreatedAt(),
-                user.getRoles()
-                        .stream()
-                        .map(Role::getRole)
-                        .collect(Collectors.toSet())
-        );
-    }
-
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found"));
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found"));
     }
 }
