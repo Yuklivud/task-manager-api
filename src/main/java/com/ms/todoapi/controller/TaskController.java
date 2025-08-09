@@ -61,8 +61,9 @@ public class TaskController {
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest taskRequest,
                                                    @AuthenticationPrincipal User user) {
         Task task = taskMapper.toEntity(taskRequest, user);
-        taskService.create(task);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Task createdTask = taskService.create(task);
+        TaskResponse response = taskMapper.taskToTaskResponse(createdTask);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
 
