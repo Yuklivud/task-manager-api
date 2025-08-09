@@ -49,7 +49,7 @@ public class TaskController {
     @Operation(summary = "Delete task by ID")
     @ApiResponse(responseCode = "204", description = "Task deleted")
     @DeleteMapping("/{id}")
-    public ResponseEntity<TaskResponse> deleteTask(@RequestParam Long id,
+    public ResponseEntity<TaskResponse> deleteTask(@PathVariable Long id,
                                                    @AuthenticationPrincipal User user) {
         taskService.deleteByIdAndUser(id, user);
         return ResponseEntity.noContent().build();
